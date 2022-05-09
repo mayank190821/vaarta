@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Link } from "react-router-dom"
+import { Link,useNavigate } from "react-router-dom"
 import { ToastContainer, toast } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { registerRoute } from '../utils/api.routes';
 
 function Register() {
+  const navigate= useNavigate();
   const reUser = /^[a-zA-Z0-9]+.{3,20}$/
-  const rePassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9](?=.*[!@#\$%\^&\*]) (?=.*[a-zA-Z0-9!@#\$%\^&\*()]+){8,25} )$/
+  let rePassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
   const [value, setValue] = useState({
     username: "",
     email: "",
@@ -22,10 +23,6 @@ function Register() {
   }
   const handleValidation = () => {
     const { username, email, password, confirmPassword } = value;
-    console.log(username)
-    console.log(email)
-    console.log(password)
-    console.log(confirmPassword)
     if (password !== confirmPassword) {
       toast.error("Password and confirm password should be same", toastOptions);
       return false;
@@ -39,7 +36,12 @@ function Register() {
     }
     return true;
   }
-  const handleSubmit = async(event) => {
+  useEffect(()=>{
+    if(localStorage.getItem('chat-app-user')){
+      navigate('/');
+    }
+  },[])
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (handleValidation()) {
       const { email, username, password } = value;
@@ -48,17 +50,15 @@ function Register() {
         email,
         password,
       });
-      if(data.status===false){
-        toast.error(data.msg,toastOptions)
+      if (data.status === false) {
+        toast.error(data.msg, toastOptions)
       }
-      if(data.status === true){
+      if (data.status === true) {
         localStorage.setItem(
-          
+          "chat-app-user", JSON.stringify(data.user)
         )
       }
-    }
-    else {
-      console.log("not pass")
+      navigate("/");
     }
   }
   const handleChange = (event) => {
