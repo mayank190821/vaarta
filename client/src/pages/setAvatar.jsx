@@ -9,7 +9,7 @@ import { Buffer } from 'buffer';
 import loader from "../assets/loader.gif";
 function SetAvatar() {
     const api = "https://api.multiavatar.com";
-    const navidate = useNavigate();
+    const navigate = useNavigate();
     const [avatars, setAvatar] = useState([]);
     const [selectedAvatar, setSelectedAvatar] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -17,12 +17,33 @@ function SetAvatar() {
         position: "bottom-right",
         autoClose: 3000,
         pauseOnHover: true,
+        theme: "dark"
     }
+    useEffect(() => {
+        if (!localStorage.getItem("chat-app-user")) {
+        navigate("/login");
+        }
+    }, [])
     const setProfilePicture = async () => {
         console.log("clicked")
         console.log(selectedAvatar)
         if (selectedAvatar.length == 0) {
             toast.error("please select an avatar", toastOptions)
+        }
+        else {
+            const user = await JSON.parse(localStorage.getItem("chat-app-user"))
+            const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
+                image: avatars[selectedAvatar]
+            })
+            if (data.isSet) {
+                user.isAvatarImageSet = true;
+                user.avatarImage = data.image
+                localStorage.setItem("chat-app-user", JSON.stringify(user))
+                nagivate("/")
+            }
+            else {
+                toast.error("Error setting avatar Try again")
+            }
         }
     };
     useEffect(() => {
@@ -46,8 +67,8 @@ function SetAvatar() {
             {
                 isLoading ? (
                     <Container>
-                        <img src={loader} style={{width:"20rem",height:"20rem"}} alt="loader" />
-                        
+                        <img src={loader} style={{ width: "20rem", height: "20rem" }} alt="loader" />
+
                     </Container>
                 ) :
                     (
