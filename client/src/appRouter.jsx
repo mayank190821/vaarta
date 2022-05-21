@@ -2,7 +2,7 @@ import React from 'react'
 import {BrowserRouter,Route,Routes} from "react-router-dom"
 import Register from './pages/register'
 import Login from './pages/login'
-import Chat from './pages/chat'
+import Chat from "../src/pages/chat"
 import SetAvatar from './pages/setAvatar'
 const AppRouter = () => {
   return (

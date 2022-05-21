@@ -53,7 +53,6 @@ function SetAvatar() {
                 const image = await axios.get(
                     `${api}/${Math.round(Math.random() * 10000)}`
                 );
-                console.log("yha")
                 const buffer = new Buffer(image.data);
                 data.push(buffer.toString("base64"));
             }
@@ -61,7 +60,7 @@ function SetAvatar() {
             setIsLoading(false);
         }
         fetchData();
-    }, []);
+    },[]);
     return (
         <>
             {
@@ -156,4 +155,4 @@ width: 100vw;
   }
 }
 `
-export default SetAvatar
+export default SetAvatar;
