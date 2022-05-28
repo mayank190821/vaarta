@@ -60,7 +60,7 @@ const setAvatar = async(req,res,next)=>{
 
 const getAllUsers = async (req, res, next) => {
     try{
-        const user = await User.find({_id:{$ne: req.params.id}}).select([
+        const user = await User.findOne({_id:{$ne: req.params.id}}).select([
             "email",
             "username",
             "avatarImage",

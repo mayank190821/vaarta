@@ -25,8 +25,6 @@ function SetAvatar() {
         }
     }, [])
     const setProfilePicture = async () => {
-        console.log("clicked")
-        console.log(selectedAvatar)
         if (selectedAvatar.length == 0) {
             toast.error("please select an avatar", toastOptions)
         }
@@ -35,11 +33,12 @@ function SetAvatar() {
             const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
                 image: avatars[selectedAvatar]
             })
+            console.log(data,"yha hu");
             if (data.isSet) {
                 user.isAvatarImageSet = true;
                 user.avatarImage = data.image
                 localStorage.setItem("chat-app-user", JSON.stringify(user))
-                nagivate("/")
+                navigate("/")
             }
             else {
                 toast.error("Error setting avatar Try again")

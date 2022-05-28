@@ -78,7 +78,7 @@ function Login() {
             onChange={(e) => handleChange(e)}
           />
           <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
-            <button type='submit'> Create user</button>
+            <button type='submit'> Login</button>
           </div>
           <span>
             Don't have an Account?<Link to="/register"> Register</Link>
