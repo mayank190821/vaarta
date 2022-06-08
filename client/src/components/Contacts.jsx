@@ -5,12 +5,15 @@ export default function Contacts({ contacts, changeChat }) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
-  useEffect(async () => {
-    const data = await JSON.parse(
-      localStorage.getItem("chat-app-user")
-    );
-    setCurrentUserName(data.username);
-    setCurrentUserImage(data.avatarImage);
+  useEffect(() => {
+    async function fun(){
+      const data = await JSON.parse(
+        localStorage.getItem("chat-app-user")
+      );
+      setCurrentUserName(data.username);
+      setCurrentUserImage(data.avatarImage);
+    }
+    fun();
   }, []);
   const changeCurrentChat = (index, contact) => {
     setCurrentSelected(index);
@@ -21,11 +24,10 @@ export default function Contacts({ contacts, changeChat }) {
       {currentUserImage && currentUserImage && (
         <Container>
           <div className="brand">
-            {/* <img src={Logo} alt="logo" /> */}
             <h3>VAARTA</h3>
           </div>
           <div className="contacts">
-            {contacts.map((contact, index) => {
+            {console.log(contacts)}{(contacts && contacts.length > 0)?(contacts.map((contact, index) => {
               return (
                 <div
                   key={contact._id}
@@ -45,7 +47,7 @@ export default function Contacts({ contacts, changeChat }) {
                   </div>
                 </div>
               );
-            })}
+            })):(<span/>)}
           </div>
           <div className="current-user">
             <div className="avatar">

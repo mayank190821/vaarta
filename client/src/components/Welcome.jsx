@@ -3,12 +3,13 @@ import styled from "styled-components";
 import Robot from "../assets/robot.gif";
 export default function Welcome() {
   const [userName, setUserName] = useState("");
-  useEffect(async () => {
-    setUserName(
-      await JSON.parse(
-        localStorage.getItem("chat-app-user")
-      ).username
-    );
+  useEffect(() => {
+    async function fun() {
+      setUserName(
+        await JSON.parse(localStorage.getItem("chat-app-user")).username
+      );
+    }
+    fun();
   }, []);
   return (
     <Container>
